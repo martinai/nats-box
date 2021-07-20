@@ -4,6 +4,8 @@ LABEL maintainer "Derek Collison <derek@nats.io>"
 LABEL maintainer "Waldemar Quevedo <wally@nats.io>"
 LABEL maintainer "Jaime Piña <jaime@nats.io>"
 
+ENV NATS_CLI_VERSION "0.0.24"
+
 WORKDIR $GOPATH/src/github.com/nats-io/
 
 RUN apk add -U --no-cache git binutils
@@ -16,6 +18,7 @@ RUN mkdir -p src/github.com/nats-io && \
     cd src/github.com/nats-io/ && \
     git clone https://github.com/nats-io/natscli.git && \
     cd natscli/nats && \
+    git checkout ${NATS_CLI_VERSION} && \
     go build -ldflags "-s -w -X main.version=$(date +%Y%m%d)" -o /nats
 
 RUN go get github.com/nats-io/stan.go/examples/stan-pub
